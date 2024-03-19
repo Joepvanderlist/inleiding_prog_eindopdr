@@ -3,34 +3,45 @@ console.log("hallo");
 let Level = 1;
 let Levens = 3;
 
+
+const gameoverScherm = document.querySelector('#gameoverScherm')
+const knop1 = document.querySelector("#knop1");
+
+
 console.log('Level '+ Level);
 
 function laadLevel(){
     if(Level === 1){
-        zoekDoos.style.left = '595px';
+        zoekDoos.style.left = '945px';
         zoekDoos.style.top = '525px';
     }
     else if(Level === 2){
-        zoekDoos.style.left = '160px';
+        zoekDoos.style.left = '510px';
         zoekDoos.style.top = '335px';
     }
     else if(Level === 3){
-        zoekDoos.style.left = '60px';
+        zoekDoos.style.left = '410px';
         zoekDoos.style.top = '315px';
     }
     else if(Level === 4){
-        zoekDoos.style.left = '287px';
+        zoekDoos.style.left = '637px';
         zoekDoos.style.top = '410px';
     }
     else{
-        zoekDoos.style.left = '615px';
+        zoekDoos.style.left = '965px';
         zoekDoos.style.top = '455px';
     }
 }
 
 let zoekDoelwit = document.querySelector("#zoekDoelwit");
 
+let plaatjesArray = ['persoon1.png','persoon2.png','persoon3.png','persoon4.png','persoon5.png' ]
+
+
 function laadFoto(){
+    let afbeelding = "images/" + plaatjesArray[(Level - 1)];
+    zoekDoelwit.src = afbeelding;
+/*
     if(Level === 1){
         zoekDoelwit.src = "images/persoon1.png";
     }
@@ -45,7 +56,7 @@ function laadFoto(){
     }
     else{
         zoekDoelwit.src = "images/persoon5.png";
-    }
+    }*/
 }
 
 
@@ -77,17 +88,26 @@ function verlaagLevens(Levens){
     }
     else{
         levensFoto.src = 'images/0levens.png';
+        gameoverScherm.style.display = 'block';
+        /*
         setTimeout(()=> {
             alert('GameOver!');
         }, 1000);
         setTimeout(()=> {
             location.reload();
-        }, 2000);
+        }, 2000);*/
         
     }
 }
 
 
+
+knop1.addEventListener('click', speelOpnieuw);
+
+function speelOpnieuw(){
+    console.log("sjj");
+    window.location.reload();
+}
 
 
 /*
@@ -100,8 +120,29 @@ let levensAfbeelding = plaatjesArray[aantalLevens-1];
 document.getElementById("levens").src = "images/"+levensAfbeelding;
 */ 
 
+
+let timeOptions = ['200', '190', '180', '170'];
+let secondsOver = parseInt(timeOptions[Math.floor(Math.random() * timeOptions.length)]);
+
+let timer = setInterval(countSeconds, 1000);
+
+function countSeconds() {
+    document.querySelector('h2').textContent = 'Tijd over: ' + secondsOver;
+    secondsOver--;
+    
+    if (secondsOver < 0) {
+        clearInterval(timer); // Stop de timer als de tijd voorbij is
+        gameoverScherm.style.display = 'block'; // Toon het game-over-scherm
+    }
+}
+
 /*
-let secondsOver = 5
+let TijdTotaal = Math.ceil(Math.random()*4);
+
+let tijdArray = ['200','190','180','170' ]
+
+let secondOver = tijdArray[TijdTotaal-1]; 
+
 
 let timer = setInterval(countSeconds, 1000)
 
@@ -111,8 +152,10 @@ function countSeconds(){
     secondsOver --;
     
     if (secondsOver <= -1 ){
+        gameoverScherm.style.display = 'block';
+        
         console.log("tijd klaar ");
-        setTimeout(()=> {
+        setTimeout(()=> { 
             alert('GameOver!');
         }, 1000);
         clearInterval(timer);
@@ -133,7 +176,7 @@ document.getElementById("zoekDoelwit").src = "images/"+persoonAfbeelding;
 */
 
 
-document.querySelector('h1').textContent = "Start spel";
+
 
 
 const zoekDoos = document.getElementById('zoekDoos'); 
@@ -152,13 +195,26 @@ function gewonnen(){
     else{
         Level++;
     }
-    updateLevel(Level);
+    updateLevel();
 }
-
-function updateLevel(Level){
+/*
+function updateLevel(){
     console.log('Level '+ Level);
     laadLevel();
     laadFoto();
-}
+}*/
 
+
+const levelsArray = ['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'];
+
+function updateLevel() {
+    levelsArray.forEach((levelText, index) => {
+        if (index + 1 === Level) {
+            console.log(levelText); 
+            document.querySelector('h1').textContent = levelText; 
+        }
+    });
+    laadLevel();
+    laadFoto();
+}
 
