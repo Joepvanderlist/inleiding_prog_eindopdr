@@ -1,16 +1,16 @@
-console.log("hallo");
+
 
 let Level = 1;
 let Levens = 3;
 
 
-const gameoverScherm = document.querySelector('#gameoverScherm')
+const gameoverScherm = document.querySelector('#gameoverScherm');
+const winScherm = document.querySelector('#winScherm');
 const knop1 = document.querySelector("#knop1");
+const knop2 = document.querySelector("#knop2");
 
 
-console.log('Level '+ Level);
-
-function laadLevel(){
+function laadLevel(){ //Deze code veranderd per level de positie van de div//
     if(Level === 1){
         zoekDoos.style.left = '945px';
         zoekDoos.style.top = '525px';
@@ -40,7 +40,7 @@ let plaatjesArray = ['persoon1.png','persoon2.png','persoon3.png','persoon4.png'
 
 function laadFoto(){
     let afbeelding = "images/" + plaatjesArray[(Level - 1)];
-    zoekDoelwit.src = afbeelding;
+    zoekDoelwit.src = afbeelding; /* De docent heeft dit voor mij geschreven*/ 
 /*
     if(Level === 1){
         zoekDoelwit.src = "images/persoon1.png";
@@ -64,7 +64,7 @@ const achtergrondFoto = document.querySelector("#achtergrondFoto");
 
 achtergrondFoto.addEventListener('click', updateLevens);
 
-function updateLevens(){
+function updateLevens(){ /* Veranderd je levens als je fout klikt*/
     if(Levens === 3){
         Levens --;
     }
@@ -79,7 +79,7 @@ function updateLevens(){
 
 let levensFoto = document.getElementById('Levens'); 
 
-function verlaagLevens(Levens){
+function verlaagLevens(){ /* Veranderd de foto van het aantal levens*/
     if(Levens === 2){
         levensFoto.src = 'images/2levens.png';
     }
@@ -89,6 +89,7 @@ function verlaagLevens(Levens){
     else{
         levensFoto.src = 'images/0levens.png';
         gameoverScherm.style.display = 'block';
+        clearInterval(timer); 
         /*
         setTimeout(()=> {
             alert('GameOver!');
@@ -104,9 +105,8 @@ function verlaagLevens(Levens){
 
 knop1.addEventListener('click', speelOpnieuw);
 
-function speelOpnieuw(){
-    console.log("sjj");
-    window.location.reload();
+function speelOpnieuw(){ /* laat de pagina refreshen als je op de "speel opnieuw" knop klikt*/
+    window.location.reload(); 
 }
 
 
@@ -122,7 +122,8 @@ document.getElementById("levens").src = "images/"+levensAfbeelding;
 
 
 let timeOptions = ['200', '190', '180', '170'];
-let secondsOver = parseInt(timeOptions[Math.floor(Math.random() * timeOptions.length)]);
+let secondsOver = timeOptions[Math.floor(Math.random() * timeOptions.length)];
+/* ChatGPT prompt: Maak de secondsOver een random getal uit de timeOpties lijst*/
 
 let timer = setInterval(countSeconds, 1000);
 
@@ -131,8 +132,8 @@ function countSeconds() {
     secondsOver--;
     
     if (secondsOver < 0) {
-        clearInterval(timer); // Stop de timer als de tijd voorbij is
-        gameoverScherm.style.display = 'block'; // Toon het game-over-scherm
+        clearInterval(timer); 
+        gameoverScherm.style.display = 'block'; 
     }
 }
 
@@ -184,19 +185,25 @@ const zoekDoos = document.getElementById('zoekDoos');
 
 zoekDoos.addEventListener('click', gewonnen);
 
-const winGeluid = new Audio('audio/win_geluid.mp3');
+const winGeluid = new Audio('audio/win_geluid.mp3'); /* Code voor audio van Jelle overgenomen*/
 
 function gewonnen(){
     winGeluid.play();
     /*alert("Gewonnen");*/
     if(Level === 5){
         Level = 1;
+        winScherm.style.display = 'block';
+        clearInterval(timer); 
     }
     else{
         Level++;
     }
     updateLevel();
 }
+
+knop2.addEventListener('click', speelOpnieuw);
+
+
 /*
 function updateLevel(){
     console.log('Level '+ Level);
@@ -210,10 +217,9 @@ const levelsArray = ['Level 1', 'Level 2', 'Level 3', 'Level 4', 'Level 5'];
 function updateLevel() {
     levelsArray.forEach((levelText, index) => {
         if (index + 1 === Level) {
-            console.log(levelText); 
             document.querySelector('h1').textContent = levelText; 
         }
-    });
+    }); /*ChatGPT prompt: verander de h1 naar "level " + Level waarin Level het huidige level is*/
     laadLevel();
     laadFoto();
 }
